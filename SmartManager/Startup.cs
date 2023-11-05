@@ -14,12 +14,14 @@ using SmartManager.Brokers.Spreadsheets;
 using SmartManager.Brokers.Storages;
 using SmartManager.Services.Foundations.Attendances;
 using SmartManager.Services.Foundations.Groups;
+using SmartManager.Services.Foundations.GroupStatistics;
 using SmartManager.Services.Foundations.Payments;
 using SmartManager.Services.Foundations.Spreadsheets;
 using SmartManager.Services.Foundations.Statistics;
 using SmartManager.Services.Foundations.Students;
 using SmartManager.Services.Processings.Attendances;
 using SmartManager.Services.Processings.Groups;
+using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.Spreadsheets;
 using SmartManager.Services.Processings.Statistics;
@@ -53,6 +55,8 @@ namespace SmartManager
             services.AddTransient<IPaymentProcessingService, PaymentProcessingService>();
             services.AddTransient<IStatisticProcessingService, StatisticProcessingService>();
             services.AddScoped<ISpreadsheetsProcessingService, SpreadsheetsProcessingService>();
+            services.AddTransient<IGroupStatisticProccessingService, GroupStatisticProccessingService>();
+            services.AddTransient<IGroupStatisticService, GroupStatisticService>();
 
         }
 

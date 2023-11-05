@@ -13,7 +13,6 @@ namespace SmartManager.Models.Attendances
         public Guid Id { get; set; }
         public DateTimeOffset Date { get; set; }
         public bool IsPresent { get; set; }
-
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
     }
