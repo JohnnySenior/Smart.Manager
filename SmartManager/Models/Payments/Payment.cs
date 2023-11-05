@@ -14,7 +14,6 @@ namespace SmartManager.Models.Payments
         public decimal Amount { get; set; }
         public DateTimeOffset Date { get; set; }
         public bool IsPaid { get; set; }
-
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
     }

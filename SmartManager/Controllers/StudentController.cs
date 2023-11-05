@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
+using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
@@ -11,10 +12,14 @@ namespace SmartManager.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentProcessingService studentProcessingService;
+        private readonly IGroupStatisticProccessingService groupStatisticProccessingService;
 
-        public StudentController(IStudentProcessingService studentProcessingService)
+        public StudentController(
+            IStudentProcessingService studentProcessingService,
+            IGroupStatisticProccessingService groupStatisticProccessingService)
         {
             this.studentProcessingService = studentProcessingService;
+            this.groupStatisticProccessingService = groupStatisticProccessingService;
         }
 
         public IActionResult PostStudent()
@@ -25,10 +30,13 @@ namespace SmartManager.Controllers
         [HttpPost]
         public async ValueTask<IActionResult> PostStudent(Student student)
         {
-            
-                await this.studentProcessingService.AddStudentAsync(student);
 
-                return RedirectToAction("GetStudents");
+            await this.studentProcessingService.AddStudentAsync(student);
+
+            await this.groupStatisticProccessingService
+                .UpdateStatisticsByStudentAsync(student);
+
+            return RedirectToAction("GetStudents");
         }
 
         public IActionResult GetStudents()
@@ -55,7 +63,7 @@ namespace SmartManager.Controllers
 
         public IActionResult GetStudentsWithPayments(Guid groupId)
         {
-            IQueryable<Student> students = 
+            IQueryable<Student> students =
                 this.studentProcessingService.RetrieveAllStudents().Where(s => s.GroupId == groupId);
 
             return View(students);
@@ -63,7 +71,7 @@ namespace SmartManager.Controllers
 
         public async ValueTask<ActionResult> GetStudentAsync(Guid Id)
         {
-            var student = 
+            var student =
                 await this.studentProcessingService.RetrieveStudentByIdAsync(Id);
 
             return Ok(student);
